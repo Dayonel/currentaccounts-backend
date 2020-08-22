@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace CurrentAccounts
 {
@@ -42,11 +44,16 @@ namespace CurrentAccounts
             #endregion
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                loggerFactory.AddSerilog();
+                loggerFactory.AddFile("logs/currentaccountsapi-{Date}.txt", LogLevel.Information);
             }
 
             app.UseHttpsRedirection();
