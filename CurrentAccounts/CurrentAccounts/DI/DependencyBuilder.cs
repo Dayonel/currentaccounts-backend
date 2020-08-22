@@ -1,4 +1,5 @@
 ﻿using CurrentAccounts.Data;
+using CurrentAccounts.Infrastructure.HostedServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,10 @@ namespace CurrentAccounts.DI
         {
             #region DB
             services.AddDbContext<CurrentAccountsDbContext>(options => options.UseInMemoryDatabase(nameof(CurrentAccounts)));
+            #endregion
+
+            #region Hosted services
+            services.AddHostedService<DbDataSeeder>();
             #endregion
         }
     }

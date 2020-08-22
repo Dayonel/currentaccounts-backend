@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CurrentAccounts.Data\CurrentAccounts.Data.csproj" />
+    <ProjectReference Include="..\CurrentAccounts.Infrastructure.HostedServices\CurrentAccounts.Infrastructure.HostedServices.csproj" />
   </ItemGroup>
 
 </Project>
