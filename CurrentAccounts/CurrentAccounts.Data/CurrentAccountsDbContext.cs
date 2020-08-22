@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CurrentAccounts.Data.DbMapping;
+using CurrentAccounts.Core.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CurrentAccounts.Data
 {
@@ -6,6 +8,15 @@ namespace CurrentAccounts.Data
     {
         public CurrentAccountsDbContext(DbContextOptions options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder builder) { }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder) 
+        {
+            builder.MapCustomers();
+            builder.MapBankAccounts();
+            builder.MapTransactions();
+        }
     }
 }
