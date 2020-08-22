@@ -1,8 +1,8 @@
-﻿using CurrentAccounts.Extensions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using CurrentAccounts.Core.Extensions;
 
 namespace CurrentAccounts.Controllers
 {
@@ -25,7 +25,7 @@ namespace CurrentAccounts.Controllers
             }
             catch(Exception ex)
             {
-                _logger.LogCritical(ex.ToString());
+                _logger.LogCritical(ex.Message());
                 return new ObjectResult($"{nameof(Get)}-{nameof(StatusController)} request failed.") { StatusCode = StatusCodes.Status500InternalServerError };
             }
         }
