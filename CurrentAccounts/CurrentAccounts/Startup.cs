@@ -66,6 +66,10 @@ namespace CurrentAccounts
 
             app.UseRouting();
 
+            app.UseCors(builder => builder.AllowAnyHeader()
+                                          .AllowAnyMethod()
+                                          .AllowAnyOrigin());
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

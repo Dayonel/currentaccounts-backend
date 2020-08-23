@@ -32,9 +32,11 @@ namespace CurrentAccounts.Data.Repository
 
         public async Task<decimal> GetBalanceByBankAccountId(int bankAccountId)
         {
-            return await _dbContext.Transactions
+            return (await _dbContext.Transactions
                 .Where(t => t.BankAccountId == bankAccountId)
-                .SumAsync(s => s.Amount);
+                .Select(s => s.Amount)
+                .ToListAsync()
+                ).Sum();
         }
     }
 }
