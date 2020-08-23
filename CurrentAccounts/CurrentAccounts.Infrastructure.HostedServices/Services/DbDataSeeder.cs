@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CurrentAccounts.Infrastructure.HostedServices.Services
 {
@@ -19,10 +20,24 @@ namespace CurrentAccounts.Infrastructure.HostedServices.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            await Migrate();
             await SeedCustomers();
             await SeedBankAccounts();
             await SeedTransactions();
         }
+
+        #region Migration
+        private async Task Migrate()
+        {
+            using (var scope = _provider.CreateScope())
+            {
+                using (var _dbContext = scope.ServiceProvider.GetRequiredService<CurrentAccountsDbContext>())
+                {
+                    await _dbContext.Database.MigrateAsync();
+                }
+            }
+        }
+        #endregion
 
         #region Customers
         private async Task SeedCustomers()
@@ -65,8 +80,11 @@ namespace CurrentAccounts.Infrastructure.HostedServices.Services
             {
                 using (var _dbContext = scope.ServiceProvider.GetRequiredService<CurrentAccountsDbContext>())
                 {
-                    _dbContext.Customers.AddRange(customers);
-                    await _dbContext.SaveChangesAsync();
+                    if (!await _dbContext.Customers.AnyAsync())
+                    {
+                        _dbContext.Customers.AddRange(customers);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }
@@ -107,8 +125,11 @@ namespace CurrentAccounts.Infrastructure.HostedServices.Services
             {
                 using (var _dbContext = scope.ServiceProvider.GetRequiredService<CurrentAccountsDbContext>())
                 {
-                    _dbContext.BankAccounts.AddRange(bankAccounts);
-                    await _dbContext.SaveChangesAsync();
+                    if (!await _dbContext.BankAccounts.AnyAsync())
+                    {
+                        _dbContext.BankAccounts.AddRange(bankAccounts);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }
@@ -167,8 +188,11 @@ namespace CurrentAccounts.Infrastructure.HostedServices.Services
             {
                 using (var _dbContext = scope.ServiceProvider.GetRequiredService<CurrentAccountsDbContext>())
                 {
-                    _dbContext.Transactions.AddRange(transactions);
-                    await _dbContext.SaveChangesAsync();
+                    if (!await _dbContext.Transactions.AnyAsync())
+                    {
+                        _dbContext.Transactions.AddRange(transactions);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }
