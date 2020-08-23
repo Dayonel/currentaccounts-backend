@@ -80,9 +80,11 @@ namespace CurrentAccounts.Infrastructure.HostedServices.Services
             {
                 using (var _dbContext = scope.ServiceProvider.GetRequiredService<CurrentAccountsDbContext>())
                 {
-                    _dbContext.Database.EnsureCreated();
-                    _dbContext.Customers.AddRange(customers);
-                    await _dbContext.SaveChangesAsync();
+                    if (!await _dbContext.Customers.AnyAsync())
+                    {
+                        _dbContext.Customers.AddRange(customers);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }
@@ -123,8 +125,11 @@ namespace CurrentAccounts.Infrastructure.HostedServices.Services
             {
                 using (var _dbContext = scope.ServiceProvider.GetRequiredService<CurrentAccountsDbContext>())
                 {
-                    _dbContext.BankAccounts.AddRange(bankAccounts);
-                    await _dbContext.SaveChangesAsync();
+                    if (!await _dbContext.BankAccounts.AnyAsync())
+                    {
+                        _dbContext.BankAccounts.AddRange(bankAccounts);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }
@@ -183,8 +188,11 @@ namespace CurrentAccounts.Infrastructure.HostedServices.Services
             {
                 using (var _dbContext = scope.ServiceProvider.GetRequiredService<CurrentAccountsDbContext>())
                 {
-                    _dbContext.Transactions.AddRange(transactions);
-                    await _dbContext.SaveChangesAsync();
+                    if (!await _dbContext.Transactions.AnyAsync())
+                    {
+                        _dbContext.Transactions.AddRange(transactions);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }

@@ -23,6 +23,7 @@ namespace CurrentAccounts.DI
 
             #region Services
             services.AddTransient<IBankAccountService, BankAccountService>();
+            services.AddTransient<ICustomerService, CustomerService>();
             #endregion
 
             #region Repository
