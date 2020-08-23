@@ -1,4 +1,10 @@
-﻿using CurrentAccounts.Data;
+﻿using CurrentAccounts.Core.Interfaces.Repository;
+using CurrentAccounts.Core.Interfaces.Repository.Base;
+using CurrentAccounts.Core.Interfaces.Services;
+using CurrentAccounts.Core.Services;
+using CurrentAccounts.Data;
+using CurrentAccounts.Data.Repository;
+using CurrentAccounts.Data.Repository.Base;
 using CurrentAccounts.Infrastructure.HostedServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +18,17 @@ namespace CurrentAccounts.DI
         {
             #region DB
             services.AddDbContext<CurrentAccountsDbContext>(options => options.UseInMemoryDatabase(nameof(CurrentAccounts)));
+            #endregion
+
+            #region Services
+            services.AddTransient<IBankAccountService, BankAccountService>();
+            #endregion
+
+            #region Repository
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IBankAccountRepository, BankAccountRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
+            services.AddTransient<ITransactionScopedRepository, TransactionScopedRepository>();
             #endregion
 
             #region Hosted services
