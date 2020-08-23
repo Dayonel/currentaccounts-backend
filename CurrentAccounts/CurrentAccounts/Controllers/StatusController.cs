@@ -8,6 +8,7 @@ namespace CurrentAccounts.Controllers
 {
     [ApiController]
     [Route("api/status")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class StatusController 
     {
         private readonly ILogger<StatusController> _logger;
