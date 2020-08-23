@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CurrentAccounts.Infrastructure.HostedServices.Services
 {
-    public class DbDataSeeder : IHostedService
+    public class DbDataSeeder : BackgroundService
     {
         private readonly IServiceProvider _provider;
         public DbDataSeeder(IServiceProvider provider)
@@ -17,16 +17,11 @@ namespace CurrentAccounts.Infrastructure.HostedServices.Services
             _provider = provider;
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             await SeedCustomers();
             await SeedBankAccounts();
             await SeedTransactions();
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
         }
 
         #region Customers
