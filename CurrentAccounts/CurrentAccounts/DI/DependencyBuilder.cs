@@ -2,6 +2,7 @@
 using CurrentAccounts.Core.Interfaces.Repository.Base;
 using CurrentAccounts.Core.Interfaces.Services;
 using CurrentAccounts.Core.Services;
+using CurrentAccounts.Core.Settings;
 using CurrentAccounts.Data;
 using CurrentAccounts.Data.Repository;
 using CurrentAccounts.Data.Repository.Base;
@@ -17,7 +18,7 @@ namespace CurrentAccounts.DI
         public static void AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             #region DB
-            services.AddDbContext<CurrentAccountsDbContext>(options => options.UseInMemoryDatabase(nameof(CurrentAccounts)));
+            services.AddDbContext<CurrentAccountsDbContext>(options => options.UseSqlite(configuration.BindSettings<DbSettings>(nameof(DbSettings)).ConnectionString));
             #endregion
 
             #region Services

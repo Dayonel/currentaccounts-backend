@@ -7,26 +7,18 @@ namespace CurrentAccounts.Core.Services
 {
     public class BankAccountService : IBankAccountService
     {
-        private readonly ICustomerRepository _customerRepository;
         private readonly IBankAccountRepository _bankAccountRepository;
         private readonly ITransactionRepository _transactionRepository;
-        public BankAccountService(ICustomerRepository customerRepository, IBankAccountRepository bankAccountRepository,
-            ITransactionRepository transactionRepository)
+        public BankAccountService(IBankAccountRepository bankAccountRepository, ITransactionRepository transactionRepository)
         {
-            _customerRepository = customerRepository;
             _bankAccountRepository = bankAccountRepository;
             _transactionRepository = transactionRepository;
         }
 
         public async Task<bool> Create(int customerId, decimal initialCredit)
         {
-            var result = false;
-
-            if (!await _customerRepository.Exists(customerId))
-                return result;
-
             var bankAccount = new BankAccount { CustomerId = customerId };
-            result = await _bankAccountRepository.Add(bankAccount);
+            var result = await _bankAccountRepository.Add(bankAccount);
 
             if (initialCredit != 0)
             {
