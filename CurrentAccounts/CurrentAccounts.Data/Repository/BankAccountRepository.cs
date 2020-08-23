@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CurrentAccounts.Data.Repository
 {
-    internal class BankAccountRepository : IBankAccountRepository
+    public class BankAccountRepository : IBankAccountRepository
     {
         private readonly CurrentAccountsDbContext _dbContext;
         public BankAccountRepository(CurrentAccountsDbContext dbContext)
@@ -16,11 +16,11 @@ namespace CurrentAccounts.Data.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<int> Add(BankAccount bankAccount)
+        public async Task<bool> Add(BankAccount bankAccount)
         {
+            bankAccount.DateCreated = DateTime.UtcNow;
             _dbContext.BankAccounts.Add(bankAccount);
-            await _dbContext.SaveChangesAsync();
-            return bankAccount.Id;
+            return await _dbContext.SaveChangesAsync() > 0;
         }
 
         public async Task<IReadOnlyCollection<BankAccount>> GetByCustomerId(int customerId)

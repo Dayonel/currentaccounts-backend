@@ -6,7 +6,7 @@ namespace CurrentAccounts.Core.Interfaces.Repository
 {
     public interface IBankAccountRepository
     {
-        Task<int> Add(BankAccount bankAccount);
+        Task<bool> Add(BankAccount bankAccount);
         Task<IReadOnlyCollection<BankAccount>> GetByCustomerId(int customerId);
         Task<bool> Update(BankAccount bankAccount);
     }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CurrentAccounts.Data.Repository
 {
-    internal class CustomerRepository : ICustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly CurrentAccountsDbContext _dbContext;
         public CustomerRepository(CurrentAccountsDbContext dbContext)
